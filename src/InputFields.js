@@ -7,61 +7,23 @@ const InputFields = () => {
     const [lastName, setLastName] = useState('Markose');
     const [referenceNumber, setReferenceNumber] = useState('');
     const [flightNumber, setFlightNumber] = useState(0);
-    const [currentDate, setCurrentDate] = useState(0);
 
     useEffect(() => {
-        const generateFlightNumber = () => {
-            setFlightNumber(Math.floor(Math.random() * 9000)+1000);
-        };
-
-        // Generate a random reference number on component mount
-        generateFlightNumber();
+        setFlightNumber(Math.floor(Math.random() * 9000)+1000);
     }, []);
 
     useEffect(() => {
-        const calculateDayNumber = () => {
-            const date = new Date();
-            const year = date.getFullYear();
-            const month = date.getMonth();
-            const day = date.getDate();
-
-            // Calculate days passed in previous months
-            const daysInMonths = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-            let totalDays = 0;
-            for (let i = 0; i < month; i++) {
-                totalDays += daysInMonths[i];
-            }
-
-            // Add current day for the current month
-            totalDays += day;
-
-            // Check for leap year for February
-            if (year % 4 === 0 && month>1) {
-                totalDays++;
-            }
-
-            setCurrentDate(totalDays);
-        };
-
-        calculateDayNumber();
+        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        let reference = '';
+        for (let i = 0; i < 3; i++) {
+            reference += characters.charAt(Math.floor(Math.random() * characters.length));
+        }
+        for (let i = 0; i < 3; i++) {
+            reference += Math.floor(Math.random() * 10);
+        }
+        setReferenceNumber(reference);
     }, []);
 
-    useEffect(() => {
-        const generateReferenceNumber = () => {
-            const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-            let reference = '';
-            for (let i = 0; i < 3; i++) {
-                reference += characters.charAt(Math.floor(Math.random() * characters.length));
-            }
-            for (let i = 0; i < 3; i++) {
-                reference += Math.floor(Math.random() * 10);
-            }
-            setReferenceNumber(reference);
-        };
-
-        // Generate a random reference number on component mount
-        generateReferenceNumber();
-    }, []);
     const handleInputChange = (event) => {
         const { name, value } = event.target;
         switch (name) {
@@ -79,14 +41,7 @@ const InputFields = () => {
         }
     };
 
-    const getFormattedName = () => {
-        const fullName = `${lastName.toUpperCase()}/${firstName.toUpperCase()}`;
-        // Add trailing spaces to fill the remaining space in the 20 character limit
-        return fullName.padEnd(20, ' ');
-    };
-
     const formatRawData = ()=>{
-        // const rawData = `M1${getFormattedName()}E${referenceNumber} ${airportCode.toUpperCase()}FNJJSR${flightNumber} ${currentDate}F003D0010 100`;
         let output = encode({
             data: {
                 legs: [
@@ -146,9 +101,6 @@ const InputFields = () => {
                 value={lastName}
                 onChange={handleInputChange}
             />
-            {/*<p>*/}
-            {/*    {formatRawData()}*/}
-            {/*</p>*/}
             <div>
             {airportCode.length === 3 ? <img src={getUrl()}/> : <div/>}
             </div>
