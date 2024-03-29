@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from "react";
 import {encode} from "bcbp";
-// import AztecBarcode from "./AztecBarcode";
+import AztecBarcode from "./AztecBarcode";
+
 const InputFields = () => {
     const [airportCode, setAirportCode] = useState('');
     const [firstName, setFirstName] = useState('Matthew');
@@ -56,9 +57,7 @@ const InputFields = () => {
                         seatNumber: "003D",
                         checkInSequenceNumber: "0015",
                         passengerStatus: "1",
-                        fastTrack:true,
-                        frequentFlyerNumber:1711218796000,
-                        airlineInfo:"JR00180YFCK13E"
+                        fastTrack:true
                     },
                 ],
                 passengerName: lastName.toUpperCase()+"/"+firstName.toUpperCase(),
@@ -69,12 +68,8 @@ const InputFields = () => {
 
             },
         });
-        console.log(output);
+        // console.log(output);
         return output;
-    }
-
-    const getUrl = () => {
-        return `https://barcode.tec-it.com/barcode.ashx?data=${formatRawData()}&code=Aztec`;
     }
 
     return (
@@ -102,11 +97,10 @@ const InputFields = () => {
                 onChange={handleInputChange}
             />
             <div>
-            {airportCode.length === 3 ? <img src={getUrl()}/> : <div/>}
             </div>
-            {/*<div className={"barcode-modal"}>*/}
-            {/*    {airportCode.length === 3 ? <AztecBarcode data={formatRawData()}/>:<div/>}*/}
-            {/*</div>*/}
+            <div className={"barcode-modal"}>
+                {airportCode.length === 3 ? <AztecBarcode data={formatRawData()}/>:<div/>}
+            </div>
 
         </div>
     );
