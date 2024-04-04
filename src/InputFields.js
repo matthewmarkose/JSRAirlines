@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from "react";
 import {encode} from "bcbp";
 import AztecBarcode from "./AztecBarcode";
+import BoardingPass from "./BoardingPass";
 
 const InputFields = () => {
     const [airportCode, setAirportCode] = useState('');
@@ -72,34 +73,46 @@ const InputFields = () => {
         return output;
     }
 
+    const renderValidModal = ()=> {
+        return (
+            <div>
+                <BoardingPass name={firstName.toUpperCase() + " " + lastName.toUpperCase()}
+                              arrivalAirport={"FNJ"}
+                              departureAirport={airportCode.toUpperCase()}
+                              seatNumber={"3D"}/>
+                <AztecBarcode data={formatRawData()}/>
+            </div>)
+    }
+
     return (
         <div>
-            <input
-                type="text"
-                name="airportCode"
-                maxLength={3}
-                placeholder="Airport Code (e.g., SFO)"
-                value={airportCode}
-                onChange={handleInputChange}
-            />
-            <input
-                type="text"
-                name="firstName"
-                placeholder="First Name"
-                value={firstName}
-                onChange={handleInputChange}
-            />
-            <input
-                type="text"
-                name="lastName"
-                placeholder="Last Name"
-                value={lastName}
-                onChange={handleInputChange}
-            />
-            <div>
+
+            <div className={"inputs"}>
+                <input
+                    type="text"
+                    name="airportCode"
+                    maxLength={3}
+                    placeholder="Airport Code (e.g., SFO)"
+                    value={airportCode}
+                    onChange={handleInputChange}
+                />
+                <input
+                    type="text"
+                    name="firstName"
+                    placeholder="First Name"
+                    value={firstName}
+                    onChange={handleInputChange}
+                />
+                <input
+                    type="text"
+                    name="lastName"
+                    placeholder="Last Name"
+                    value={lastName}
+                    onChange={handleInputChange}
+                />
             </div>
-            <div className={"barcode-modal"}>
-                {airportCode.length === 3 ? <AztecBarcode data={formatRawData()}/>:<div/>}
+            <div className={"boarding_pass"}>
+                {airportCode.length === 3 ? renderValidModal() : <div/>}
             </div>
 
         </div>

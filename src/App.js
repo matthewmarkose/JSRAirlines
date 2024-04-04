@@ -11,7 +11,7 @@ const App = () => (
         <main className="main">
             <InputFields/>
         </main>
-        <img srcSet={ram} alt={"ram on a ride"}/>
+        {/*<img srcSet={ram} alt={"ram on a ride"}/>*/}
     </div>
 );
 
