@@ -1,6 +1,5 @@
 import './App.css';
 import './InputFields';
-import ram from './ram_on_plane.png';
 import InputFields from "./InputFields";
 
 const App = () => (

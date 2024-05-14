@@ -7,7 +7,7 @@ const AztecBarcode = ({data}) => {
     useEffect(() => {
         try {
             // The return value is the canvas element
-            const canvas = bwipjs.toCanvas(canvasRef.current, {
+            bwipjs.toCanvas(canvasRef.current, {
                 bcid: 'azteccode', // Barcode type
                 text: data, // Text to encode
                 backgroundcolor: "#FFFFFF"
@@ -16,10 +16,10 @@ const AztecBarcode = ({data}) => {
             // Handle errors gracefully, e.g., log to console or display user-friendly message
             console.error('AztecBarcode error:', error);
         }
-    }, []); // Empty dependency array ensures initialization only once
+    }); // Empty dependency array ensures initialization only once
 
     return (
-        <canvas id="mycanvas" ref={canvasRef} /> // Pass the ref to the canvas element
+        <canvas id="mycanvas" ref={canvasRef}/> // Pass the ref to the canvas element
     );
 };
 

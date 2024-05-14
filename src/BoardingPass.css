@@ -1,5 +1,5 @@
 /* Boarding Pass Styles */
-.boarding-pass {
+.boarding_pass {
     display: flex;
     flex-direction: column;
     width: 100%; /* Full width on mobile */
@@ -8,7 +8,6 @@
     border-radius: 5px;
     background-color: #fff;
     box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px;
 }
 
 /* Airline Section */

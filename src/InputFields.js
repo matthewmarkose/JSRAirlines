@@ -69,19 +69,7 @@ const InputFields = () => {
 
             },
         });
-        // console.log(output);
         return output;
-    }
-
-    const renderValidModal = ()=> {
-        return (
-            <div>
-                <BoardingPass name={firstName.toUpperCase() + " " + lastName.toUpperCase()}
-                              arrivalAirport={"FNJ"}
-                              departureAirport={airportCode.toUpperCase()}
-                              seatNumber={"3D"}/>
-                <AztecBarcode data={formatRawData()}/>
-            </div>)
     }
 
     return (
@@ -111,8 +99,15 @@ const InputFields = () => {
                     onChange={handleInputChange}
                 />
             </div>
-            <div className={"boarding_pass"}>
-                {airportCode.length === 3 ? renderValidModal() : <div/>}
+            <div className={"boarding_pass"} style={{paddingTop:50, paddingBottom:500}}>
+                {airportCode.length === 3 &&
+                    <div>
+                        <BoardingPass name={firstName.toUpperCase() + " " + lastName.toUpperCase()}
+                                      arrivalAirport={"FNJ"}
+                                      departureAirport={airportCode.toUpperCase()}
+                                      seatNumber={"3D"}/>
+                        <AztecBarcode data={formatRawData()}/>
+                    </div>}
             </div>
 
         </div>
