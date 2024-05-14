@@ -4,7 +4,6 @@ import planeImage from "./ram_on_plane.png";
 const BoardingPass = ({ name, departureAirport, arrivalAirport, seatNumber }) => {
     return (
         <div className="boarding-pass">
-            {/*style={{marginTop:50, marginBottom:500}}*/}
             {/* Airline and Logo */}
             <div className="airline">
                 <img id={"rama"} src={planeImage} alt="Plane Logo" width={'100%'}/>
