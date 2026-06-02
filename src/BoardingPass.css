@@ -1,59 +1,164 @@
-/* Boarding Pass Styles */
+/* Outer card — used by html2canvas capture ref */
 .boarding_pass {
+    max-width: 320px;
+    width: 100%;
+    margin: 16px auto 0;
+    background-color: #211b35;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+    overflow: hidden;
+}
+
+/* Inner pass content */
+.boarding-pass__header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 16px;
+    background: linear-gradient(135deg, #FF9933 0%, #E8850C 100%);
+    color: #ffffff;
+}
+
+.boarding-pass__logo {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.boarding-pass__airline {
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+}
+
+.boarding-pass__body {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    grid-template-rows: auto auto;
+    column-gap: 8px;
+    row-gap: 12px;
+    padding: 14px 18px 12px;
+    background-color: #211b35;
+}
+
+.boarding-pass__align-left {
+    grid-column: 1;
+    align-items: flex-start;
+    text-align: left;
+}
+
+.boarding-pass__align-right {
+    grid-column: 3;
+    align-items: flex-end;
+    text-align: right;
+}
+
+.boarding-pass__airport {
     display: flex;
     flex-direction: column;
-    width: 100%; /* Full width on mobile */
-    padding: 20px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    background-color: #fff;
-    box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
+    gap: 2px;
+    grid-row: 1;
+    min-width: 0;
 }
 
-/* Airline Section */
-.airline {
+.boarding-pass__connector {
+    grid-column: 2;
+    grid-row: 1;
+    font-size: 32px;
+    color: #E8850C;
+    align-self: center;
+}
+
+.boarding-pass__label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #9a9088;
+}
+
+.boarding-pass__code {
+    font-size: 30px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: #f0ebe4;
+    line-height: 1;
+}
+
+.boarding-pass__field {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
+    flex-direction: column;
+    gap: 2px;
+    grid-row: 2;
+    min-width: 0;
 }
 
-.airline span {
-    font-size: 18px;
-    font-weight: bold;
+.boarding-pass__field.boarding-pass__align-left {
+    grid-column: 1;
 }
 
-.airline img {
-    /* Set maximum width to prevent exceeding page width */
-    /*max-width: 100%;*/
-    /* Maintain aspect ratio while scaling */
+.boarding-pass__field.boarding-pass__align-right {
+    grid-column: 3;
+}
+
+.boarding-pass__value {
+    font-size: 16px;
+    font-weight: 600;
+    color: #f0ebe4;
+    word-break: break-word;
+}
+
+.boarding-pass__footer {
+    display: block;
+    width: 100%;
     height: auto;
-    object-fit: cover;
+    margin-bottom: 16px;
 }
 
-/* Passenger Info, Flight Info & Boarding Details */
-.passenger-info,
-.flight-info,
-.boarding-details {
-    margin-bottom: 10px;
+/* Perforated tear line */
+.boarding-pass__tear {
+    position: relative;
+    height: 16px;
+    background-color: #211b35;
 }
 
-.passenger-info p,
-.flight-info p,
-.boarding-details p {
-    font-size: 14px;
-    margin-bottom: 5px;
+.boarding-pass__tear::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 8px;
+    background-image: radial-gradient(circle, #555555 3px, transparent 3px);
+    background-size: 12px 8px;
+    background-repeat: repeat-x;
+    background-position: center top;
 }
 
-/* Media Query for Mobile Responsiveness */
+/* Barcode section */
+.boarding-pass__barcode {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 12px 16px 16px;
+    background-color: #211b35;
+}
+
+.boarding-pass__barcode canvas {
+    max-width: 154px;
+    width: 100%;
+    height: auto;
+}
+
 @media (max-width: 768px) {
-    .airline {
-        flex-direction: column;
-        align-items: center;
+    .boarding_pass {
+        margin: 16px 12px 0;
+        width: calc(100% - 24px);
     }
 
-    .airline span {
-        margin-bottom: 10px;
+    .boarding-pass__code {
+        font-size: 28px;
     }
-
 }

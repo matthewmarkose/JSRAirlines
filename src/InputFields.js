@@ -1,5 +1,6 @@
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect, useRef} from "react";
 import {encode} from "bcbp";
+import html2canvas from "html2canvas";
 import AztecBarcode from "./AztecBarcode";
 import BoardingPass from "./BoardingPass";
 
@@ -9,6 +10,8 @@ const InputFields = () => {
     const [lastName, setLastName] = useState('Markose');
     const [referenceNumber, setReferenceNumber] = useState('');
     const [flightNumber, setFlightNumber] = useState(0);
+    const boardingPassRef = useRef(null);
+    const downloadLinkRef = useRef(null);
 
     useEffect(() => {
         setFlightNumber(Math.floor(Math.random() * 9000)+1000);
@@ -72,6 +75,30 @@ const InputFields = () => {
         return output;
     }
 
+    const handleCaptureAndDownload = async () => {
+        if (!boardingPassRef.current || !downloadLinkRef.current) return;
+
+        try {
+            const canvas = await html2canvas(boardingPassRef.current, {
+                backgroundColor: '#1e1a16',
+                scale: 2,
+                logging: false
+            });
+            
+            canvas.toBlob((blob) => {
+                if (blob && downloadLinkRef.current) {
+                    const url = URL.createObjectURL(blob);
+                    downloadLinkRef.current.href = url;
+                    downloadLinkRef.current.download = 'boarding-pass.png';
+                    downloadLinkRef.current.click();
+                    URL.revokeObjectURL(url);
+                }
+            }, 'image/png');
+        } catch (error) {
+            console.error('Error capturing boarding pass:', error);
+        }
+    };
+
     return (
         <div>
 
@@ -99,16 +126,52 @@ const InputFields = () => {
                     onChange={handleInputChange}
                 />
             </div>
-            <div className={"boarding_pass"} style={{paddingTop:50, paddingBottom:500}}>
-                {airportCode.length === 3 &&
-                    <div>
-                        <BoardingPass name={firstName.toUpperCase() + " " + lastName.toUpperCase()}
-                                      arrivalAirport={"FNJ"}
-                                      departureAirport={airportCode.toUpperCase()}
-                                      seatNumber={"3D"}/>
+            {airportCode.length === 3 && (
+                <>
+                    <button 
+                        onClick={handleCaptureAndDownload}
+                        style={{
+                            marginTop: '20px',
+                            padding: '10px 20px',
+                            fontSize: '16px',
+                            backgroundColor: '#4CAF50',
+                            color: 'white',
+                            border: 'none',
+                            borderRadius: '5px',
+                            cursor: 'pointer'
+                        }}
+                    >
+                        Download Boarding Pass as Image
+                    </button>
+                    {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+                    <a
+                        ref={downloadLinkRef}
+                        href="#"
+                        download="boarding-pass.png"
+                        style={{ display: 'none' }}
+                        aria-label="Download boarding pass image"
+                    >
+                        Download
+                    </a>
+                </>
+            )}
+            {airportCode.length === 3 && (
+                <div ref={boardingPassRef} className="boarding_pass">
+                    <BoardingPass name={firstName.toUpperCase() + " " + lastName.toUpperCase()}
+                                  arrivalAirport={"FNJ"}
+                                  departureAirport={airportCode.toUpperCase()}
+                                  seatNumber={"3D"}/>
+                    <img
+                        className="boarding-pass__footer"
+                        src={`${process.env.PUBLIC_URL}/footer@3x.png`}
+                        alt=""
+                    />
+                    <div className="boarding-pass__tear" aria-hidden="true" />
+                    <div className="boarding-pass__barcode">
                         <AztecBarcode data={formatRawData()}/>
-                    </div>}
-            </div>
+                    </div>
+                </div>
+            )}
 
         </div>
     );
