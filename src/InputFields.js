@@ -75,10 +75,23 @@ const InputFields = () => {
         return output;
     }
 
+    const waitForImages = (element) => {
+        const images = element.querySelectorAll('img');
+        return Promise.all([...images].map((img) => {
+            if (img.complete) return Promise.resolve();
+            return new Promise((resolve) => {
+                img.onload = resolve;
+                img.onerror = resolve;
+            });
+        }));
+    };
+
     const handleCaptureAndDownload = async () => {
         if (!boardingPassRef.current || !downloadLinkRef.current) return;
 
         try {
+            await waitForImages(boardingPassRef.current);
+
             const canvas = await html2canvas(boardingPassRef.current, {
                 backgroundColor: '#1e1a16',
                 scale: 2,
@@ -161,14 +174,16 @@ const InputFields = () => {
                                   arrivalAirport={"FNJ"}
                                   departureAirport={airportCode.toUpperCase()}
                                   seatNumber={"3D"}/>
-                    <img
-                        className="boarding-pass__footer"
-                        src={`${process.env.PUBLIC_URL}/footer@3x.png`}
-                        alt=""
-                    />
                     <div className="boarding-pass__tear" aria-hidden="true" />
-                    <div className="boarding-pass__barcode">
-                        <AztecBarcode data={formatRawData()}/>
+                    <div className="boarding-pass__barcode-section">
+                        <img
+                            className="boarding-pass__footer"
+                            src={`${process.env.PUBLIC_URL}/footer@2x.png`}
+                            alt=""
+                        />
+                        <div className="boarding-pass__barcode">
+                            <AztecBarcode data={formatRawData()}/>
+                        </div>
                     </div>
                 </div>
             )}
